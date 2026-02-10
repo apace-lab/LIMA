@@ -1,0 +1,11 @@
+# GHSA-j828-28rj-hfhp: vLLM Multiple ReDoS Vulnerabilities
+
+services:
+  vllm-redos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vllm-ghsa-j828
+    command: ["python3", "/workspace/exploit.py"]
+    tty: true
+    stdin_open: true
