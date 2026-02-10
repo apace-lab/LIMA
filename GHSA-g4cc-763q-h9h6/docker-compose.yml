@@ -1,0 +1,11 @@
+# GHSA-g4cc-763q-h9h6: llama.cpp Heap Over-Read in Vocab Loading
+
+services:
+  llamacpp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: llamacpp-ghsa-g4cc
+    volumes:
+      - ./poc:/poc
+    command: ["sleep", "infinity"]
