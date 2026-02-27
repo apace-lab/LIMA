@@ -1,0 +1,6 @@
+[?2026h[?25l[1Ggathering model components [K
+copying file sha256:6456d3d0eca4d93a4aeaa6b397564aabb01e04ed3fc5676a992492b653b62ba4 100% [K
+parsing GGUF [K
+using existing layer sha256:6456d3d0eca4d93a4aeaa6b397564aabb01e04ed3fc5676a992492b653b62ba4 [K
+writing manifest [K
+success [K[?25h[?2026l

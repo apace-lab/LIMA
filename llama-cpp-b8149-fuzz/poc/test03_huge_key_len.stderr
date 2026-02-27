@@ -1,0 +1,11 @@
+read: string length 2147483648 exceeds maximum 1073741824
+gguf_init_from_file_impl: failed to read key-value pairs
+llama_model_load: error loading model: llama_model_loader: failed to load model from /workspace/poc/test03_huge_key_len.gguf
+llama_model_load_from_file_impl: failed to load model
+llama_params_fit: encountered an error while trying to fit params to free device memory: failed to load model
+read: string length 2147483648 exceeds maximum 1073741824
+gguf_init_from_file_impl: failed to read key-value pairs
+llama_model_load: error loading model: llama_model_loader: failed to load model from /workspace/poc/test03_huge_key_len.gguf
+llama_model_load_from_file_impl: failed to load model
+common_init_from_params: failed to load model '/workspace/poc/test03_huge_key_len.gguf'
+srv    load_model: failed to load model, '/workspace/poc/test03_huge_key_len.gguf'

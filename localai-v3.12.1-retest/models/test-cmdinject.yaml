@@ -1,0 +1,4 @@
+name: test-cmdinject
+backend: "llama-cpp; touch /tmp/pwned_5181; echo"
+parameters:
+  model: dummy.gguf

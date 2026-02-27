@@ -1,0 +1,200 @@
+ollama-v0170-retest  | time=2026-02-25T21:10:36.892Z level=INFO source=images.go:473 msg="total blobs: 0"
+ollama-v0170-retest  | time=2026-02-25T21:10:36.892Z level=INFO source=images.go:480 msg="total unused blobs removed: 0"
+ollama-v0170-retest  | time=2026-02-25T21:10:36.892Z level=INFO source=routes.go:1718 msg="Listening on [::]:11434 (version 0.17.0)"
+ollama-v0170-retest  | time=2026-02-25T21:10:36.894Z level=INFO source=runner.go:67 msg="discovering available GPUs..."
+ollama-v0170-retest  | time=2026-02-25T21:10:36.895Z level=INFO source=server.go:431 msg="starting runner" cmd="/usr/bin/ollama runner --ollama-engine --port 35887"
+ollama-v0170-retest  | time=2026-02-25T21:10:36.931Z level=INFO source=server.go:431 msg="starting runner" cmd="/usr/bin/ollama runner --ollama-engine --port 33577"
+ollama-v0170-retest  | time=2026-02-25T21:10:36.959Z level=INFO source=types.go:60 msg="inference compute" id=cpu library=cpu compute="" name=cpu description=cpu libdirs=ollama driver="" pci_id="" type="" total="7.7 GiB" available="7.6 GiB"
+ollama-v0170-retest  | time=2026-02-25T21:10:36.959Z level=INFO source=routes.go:1768 msg="vram-based default context" total_vram="0 B" default_num_ctx=4096
+ollama-v0170-retest  | [GIN] 2026/02/25 - 21:10:46 | 200 |    2.036791ms | 185.199.108.133 | GET      "/api/version"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 21:10:46 | 200 |      42.583µs | 185.199.108.133 | GET      "/api/version"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 21:10:46 | 200 |     415.125µs | 185.199.108.133 | GET      "/api/tags"
+ollama-v0170-retest  | time=2026-02-25T21:10:47.609Z level=INFO source=download.go:179 msg="downloading 2af3b81862c6 in 7 100 MB part(s)"
+ollama-v0170-retest  | time=2026-02-25T21:12:10.841Z level=INFO source=download.go:179 msg="downloading af0ddbdaaa26 in 1 70 B part(s)"
+ollama-v0170-retest  | time=2026-02-25T21:12:12.105Z level=INFO source=download.go:179 msg="downloading c8472cd9daed in 1 31 B part(s)"
+ollama-v0170-retest  | time=2026-02-25T21:12:13.350Z level=INFO source=download.go:179 msg="downloading fa956ab37b8c in 1 98 B part(s)"
+ollama-v0170-retest  | time=2026-02-25T21:12:14.590Z level=INFO source=download.go:179 msg="downloading 6331358be52a in 1 483 B part(s)"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 21:12:16 | 200 |         1m29s | 185.199.108.133 | POST     "/api/pull"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 21:12:21 | 200 |    1.586667ms |     172.64.66.1 | GET      "/api/tags"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 21:12:21 | 200 |    1.185917ms |     172.64.66.1 | GET      "/api/tags"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 21:12:21 | 400 |    4.574417ms |     172.64.66.1 | POST     "/api/generate"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 21:12:26 | 200 |      414.25µs |     172.64.66.1 | GET      "/api/version"
+ollama-v0170-retest  | time=2026-02-25T21:12:26.646Z level=WARN source=cpu_linux.go:130 msg="failed to parse CPU allowed micro secs" error="strconv.ParseInt: parsing \"max\": invalid syntax"
+ollama-v0170-retest  | llama_model_loader: loaded meta data with 23 key-value pairs and 201 tensors from /root/.ollama/models/blobs/sha256-2af3b81862c6be03c769683af18efdadb2c33f60ff32ab6f83e42c043d6c7816 (version GGUF V3 (latest))
+ollama-v0170-retest  | llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+ollama-v0170-retest  | llama_model_loader: - kv   0:                       general.architecture str              = llama
+ollama-v0170-retest  | llama_model_loader: - kv   1:                               general.name str              = TinyLlama
+ollama-v0170-retest  | llama_model_loader: - kv   2:                       llama.context_length u32              = 2048
+ollama-v0170-retest  | llama_model_loader: - kv   3:                     llama.embedding_length u32              = 2048
+ollama-v0170-retest  | llama_model_loader: - kv   4:                          llama.block_count u32              = 22
+ollama-v0170-retest  | llama_model_loader: - kv   5:                  llama.feed_forward_length u32              = 5632
+ollama-v0170-retest  | llama_model_loader: - kv   6:                 llama.rope.dimension_count u32              = 64
+ollama-v0170-retest  | llama_model_loader: - kv   7:                 llama.attention.head_count u32              = 32
+ollama-v0170-retest  | llama_model_loader: - kv   8:              llama.attention.head_count_kv u32              = 4
+ollama-v0170-retest  | llama_model_loader: - kv   9:     llama.attention.layer_norm_rms_epsilon f32              = 0.000010
+ollama-v0170-retest  | llama_model_loader: - kv  10:                       llama.rope.freq_base f32              = 10000.000000
+ollama-v0170-retest  | llama_model_loader: - kv  11:                          general.file_type u32              = 2
+ollama-v0170-retest  | llama_model_loader: - kv  12:                       tokenizer.ggml.model str              = llama
+ollama-v0170-retest  | llama_model_loader: - kv  13:                      tokenizer.ggml.tokens arr[str,32000]   = ["<unk>", "<s>", "</s>", "<0x00>", "<...
+ollama-v0170-retest  | llama_model_loader: - kv  14:                      tokenizer.ggml.scores arr[f32,32000]   = [0.000000, 0.000000, 0.000000, 0.0000...
+ollama-v0170-retest  | llama_model_loader: - kv  15:                  tokenizer.ggml.token_type arr[i32,32000]   = [2, 3, 3, 6, 6, 6, 6, 6, 6, 6, 6, 6, ...
+ollama-v0170-retest  | llama_model_loader: - kv  16:                      tokenizer.ggml.merges arr[str,61249]   = ["▁ t", "e r", "i n", "▁ a", "e n...
+ollama-v0170-retest  | llama_model_loader: - kv  17:                tokenizer.ggml.bos_token_id u32              = 1
+ollama-v0170-retest  | llama_model_loader: - kv  18:                tokenizer.ggml.eos_token_id u32              = 2
+ollama-v0170-retest  | llama_model_loader: - kv  19:            tokenizer.ggml.unknown_token_id u32              = 0
+ollama-v0170-retest  | llama_model_loader: - kv  20:            tokenizer.ggml.padding_token_id u32              = 2
+ollama-v0170-retest  | llama_model_loader: - kv  21:                    tokenizer.chat_template str              = {% for message in messages %}\n{% if m...
+ollama-v0170-retest  | llama_model_loader: - kv  22:               general.quantization_version u32              = 2
+ollama-v0170-retest  | llama_model_loader: - type  f32:   45 tensors
+ollama-v0170-retest  | llama_model_loader: - type q4_0:  155 tensors
+ollama-v0170-retest  | llama_model_loader: - type q6_K:    1 tensors
+ollama-v0170-retest  | print_info: file format = GGUF V3 (latest)
+ollama-v0170-retest  | print_info: file type   = Q4_0
+ollama-v0170-retest  | print_info: file size   = 606.53 MiB (4.63 BPW) 
+ollama-v0170-retest  | load: special_eos_id is not in special_eog_ids - the tokenizer config may be incorrect
+ollama-v0170-retest  | load: printing all EOG tokens:
+ollama-v0170-retest  | load:   - 2 ('</s>')
+ollama-v0170-retest  | load: special tokens cache size = 3
+ollama-v0170-retest  | load: token to piece cache size = 0.1684 MB
+ollama-v0170-retest  | print_info: arch             = llama
+ollama-v0170-retest  | print_info: vocab_only       = 1
+ollama-v0170-retest  | print_info: no_alloc         = 0
+ollama-v0170-retest  | print_info: model type       = ?B
+ollama-v0170-retest  | print_info: model params     = 1.10 B
+ollama-v0170-retest  | print_info: general.name     = TinyLlama
+ollama-v0170-retest  | print_info: vocab type       = SPM
+ollama-v0170-retest  | print_info: n_vocab          = 32000
+ollama-v0170-retest  | print_info: n_merges         = 0
+ollama-v0170-retest  | print_info: BOS token        = 1 '<s>'
+ollama-v0170-retest  | print_info: EOS token        = 2 '</s>'
+ollama-v0170-retest  | print_info: UNK token        = 0 '<unk>'
+ollama-v0170-retest  | print_info: PAD token        = 2 '</s>'
+ollama-v0170-retest  | print_info: LF token         = 13 '<0x0A>'
+ollama-v0170-retest  | print_info: EOG token        = 2 '</s>'
+ollama-v0170-retest  | print_info: max token length = 48
+ollama-v0170-retest  | llama_model_load: vocab only - skipping tensors
+ollama-v0170-retest  | time=2026-02-25T21:12:26.706Z level=WARN source=server.go:169 msg="requested context size too large for model" num_ctx=4096 n_ctx_train=2048
+ollama-v0170-retest  | time=2026-02-25T21:12:26.707Z level=INFO source=server.go:431 msg="starting runner" cmd="/usr/bin/ollama runner --model /root/.ollama/models/blobs/sha256-2af3b81862c6be03c769683af18efdadb2c33f60ff32ab6f83e42c043d6c7816 --port 41565"
+ollama-v0170-retest  | time=2026-02-25T21:12:26.708Z level=INFO source=sched.go:491 msg="system memory" total="7.7 GiB" free="7.0 GiB" free_swap="4.0 GiB"
+ollama-v0170-retest  | time=2026-02-25T21:12:26.708Z level=INFO source=server.go:498 msg="loading model" "model layers"=23 requested=-1
+ollama-v0170-retest  | time=2026-02-25T21:12:26.708Z level=INFO source=device.go:245 msg="model weights" device=CPU size="571.4 MiB"
+ollama-v0170-retest  | time=2026-02-25T21:12:26.708Z level=INFO source=device.go:256 msg="kv cache" device=CPU size="44.0 MiB"
+ollama-v0170-retest  | time=2026-02-25T21:12:26.708Z level=INFO source=device.go:272 msg="total memory" size="615.4 MiB"
+ollama-v0170-retest  | time=2026-02-25T21:12:26.737Z level=INFO source=runner.go:965 msg="starting go runner"
+ollama-v0170-retest  | load_backend: loaded CPU backend from /usr/lib/ollama/libggml-cpu.so
+ollama-v0170-retest  | time=2026-02-25T21:12:26.740Z level=INFO source=ggml.go:104 msg=system CPU.0.NEON=1 CPU.0.ARM_FMA=1 CPU.0.LLAMAFILE=1 CPU.1.NEON=1 CPU.1.ARM_FMA=1 CPU.1.LLAMAFILE=1 compiler=cgo(clang)
+ollama-v0170-retest  | time=2026-02-25T21:12:26.749Z level=INFO source=runner.go:1001 msg="Server listening on 127.0.0.1:41565"
+ollama-v0170-retest  | time=2026-02-25T21:12:26.756Z level=INFO source=runner.go:895 msg=load request="{Operation:commit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Auto KvSize:2048 KvCacheType: NumThreads:8 GPULayers:[] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+ollama-v0170-retest  | time=2026-02-25T21:12:26.756Z level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+ollama-v0170-retest  | time=2026-02-25T21:12:26.757Z level=INFO source=server.go:1384 msg="waiting for server to become available" status="llm server loading model"
+ollama-v0170-retest  | llama_model_loader: loaded meta data with 23 key-value pairs and 201 tensors from /root/.ollama/models/blobs/sha256-2af3b81862c6be03c769683af18efdadb2c33f60ff32ab6f83e42c043d6c7816 (version GGUF V3 (latest))
+ollama-v0170-retest  | llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+ollama-v0170-retest  | llama_model_loader: - kv   0:                       general.architecture str              = llama
+ollama-v0170-retest  | llama_model_loader: - kv   1:                               general.name str              = TinyLlama
+ollama-v0170-retest  | llama_model_loader: - kv   2:                       llama.context_length u32              = 2048
+ollama-v0170-retest  | llama_model_loader: - kv   3:                     llama.embedding_length u32              = 2048
+ollama-v0170-retest  | llama_model_loader: - kv   4:                          llama.block_count u32              = 22
+ollama-v0170-retest  | llama_model_loader: - kv   5:                  llama.feed_forward_length u32              = 5632
+ollama-v0170-retest  | llama_model_loader: - kv   6:                 llama.rope.dimension_count u32              = 64
+ollama-v0170-retest  | llama_model_loader: - kv   7:                 llama.attention.head_count u32              = 32
+ollama-v0170-retest  | llama_model_loader: - kv   8:              llama.attention.head_count_kv u32              = 4
+ollama-v0170-retest  | llama_model_loader: - kv   9:     llama.attention.layer_norm_rms_epsilon f32              = 0.000010
+ollama-v0170-retest  | llama_model_loader: - kv  10:                       llama.rope.freq_base f32              = 10000.000000
+ollama-v0170-retest  | llama_model_loader: - kv  11:                          general.file_type u32              = 2
+ollama-v0170-retest  | llama_model_loader: - kv  12:                       tokenizer.ggml.model str              = llama
+ollama-v0170-retest  | llama_model_loader: - kv  13:                      tokenizer.ggml.tokens arr[str,32000]   = ["<unk>", "<s>", "</s>", "<0x00>", "<...
+ollama-v0170-retest  | llama_model_loader: - kv  14:                      tokenizer.ggml.scores arr[f32,32000]   = [0.000000, 0.000000, 0.000000, 0.0000...
+ollama-v0170-retest  | llama_model_loader: - kv  15:                  tokenizer.ggml.token_type arr[i32,32000]   = [2, 3, 3, 6, 6, 6, 6, 6, 6, 6, 6, 6, ...
+ollama-v0170-retest  | llama_model_loader: - kv  16:                      tokenizer.ggml.merges arr[str,61249]   = ["▁ t", "e r", "i n", "▁ a", "e n...
+ollama-v0170-retest  | llama_model_loader: - kv  17:                tokenizer.ggml.bos_token_id u32              = 1
+ollama-v0170-retest  | llama_model_loader: - kv  18:                tokenizer.ggml.eos_token_id u32              = 2
+ollama-v0170-retest  | llama_model_loader: - kv  19:            tokenizer.ggml.unknown_token_id u32              = 0
+ollama-v0170-retest  | llama_model_loader: - kv  20:            tokenizer.ggml.padding_token_id u32              = 2
+ollama-v0170-retest  | llama_model_loader: - kv  21:                    tokenizer.chat_template str              = {% for message in messages %}\n{% if m...
+ollama-v0170-retest  | llama_model_loader: - kv  22:               general.quantization_version u32              = 2
+ollama-v0170-retest  | llama_model_loader: - type  f32:   45 tensors
+ollama-v0170-retest  | llama_model_loader: - type q4_0:  155 tensors
+ollama-v0170-retest  | llama_model_loader: - type q6_K:    1 tensors
+ollama-v0170-retest  | print_info: file format = GGUF V3 (latest)
+ollama-v0170-retest  | print_info: file type   = Q4_0
+ollama-v0170-retest  | print_info: file size   = 606.53 MiB (4.63 BPW) 
+ollama-v0170-retest  | load: special_eos_id is not in special_eog_ids - the tokenizer config may be incorrect
+ollama-v0170-retest  | load: printing all EOG tokens:
+ollama-v0170-retest  | load:   - 2 ('</s>')
+ollama-v0170-retest  | load: special tokens cache size = 3
+ollama-v0170-retest  | load: token to piece cache size = 0.1684 MB
+ollama-v0170-retest  | print_info: arch             = llama
+ollama-v0170-retest  | print_info: vocab_only       = 0
+ollama-v0170-retest  | print_info: no_alloc         = 0
+ollama-v0170-retest  | print_info: n_ctx_train      = 2048
+ollama-v0170-retest  | print_info: n_embd           = 2048
+ollama-v0170-retest  | print_info: n_embd_inp       = 2048
+ollama-v0170-retest  | print_info: n_layer          = 22
+ollama-v0170-retest  | print_info: n_head           = 32
+ollama-v0170-retest  | print_info: n_head_kv        = 4
+ollama-v0170-retest  | print_info: n_rot            = 64
+ollama-v0170-retest  | print_info: n_swa            = 0
+ollama-v0170-retest  | print_info: is_swa_any       = 0
+ollama-v0170-retest  | print_info: n_embd_head_k    = 64
+ollama-v0170-retest  | print_info: n_embd_head_v    = 64
+ollama-v0170-retest  | print_info: n_gqa            = 8
+ollama-v0170-retest  | print_info: n_embd_k_gqa     = 256
+ollama-v0170-retest  | print_info: n_embd_v_gqa     = 256
+ollama-v0170-retest  | print_info: f_norm_eps       = 0.0e+00
+ollama-v0170-retest  | print_info: f_norm_rms_eps   = 1.0e-05
+ollama-v0170-retest  | print_info: f_clamp_kqv      = 0.0e+00
+ollama-v0170-retest  | print_info: f_max_alibi_bias = 0.0e+00
+ollama-v0170-retest  | print_info: f_logit_scale    = 0.0e+00
+ollama-v0170-retest  | print_info: f_attn_scale     = 0.0e+00
+ollama-v0170-retest  | print_info: n_ff             = 5632
+ollama-v0170-retest  | print_info: n_expert         = 0
+ollama-v0170-retest  | print_info: n_expert_used    = 0
+ollama-v0170-retest  | print_info: n_expert_groups  = 0
+ollama-v0170-retest  | print_info: n_group_used     = 0
+ollama-v0170-retest  | print_info: causal attn      = 1
+ollama-v0170-retest  | print_info: pooling type     = 0
+ollama-v0170-retest  | print_info: rope type        = 0
+ollama-v0170-retest  | print_info: rope scaling     = linear
+ollama-v0170-retest  | print_info: freq_base_train  = 10000.0
+ollama-v0170-retest  | print_info: freq_scale_train = 1
+ollama-v0170-retest  | print_info: n_ctx_orig_yarn  = 2048
+ollama-v0170-retest  | print_info: rope_yarn_log_mul= 0.0000
+ollama-v0170-retest  | print_info: rope_finetuned   = unknown
+ollama-v0170-retest  | print_info: model type       = 1B
+ollama-v0170-retest  | print_info: model params     = 1.10 B
+ollama-v0170-retest  | print_info: general.name     = TinyLlama
+ollama-v0170-retest  | print_info: vocab type       = SPM
+ollama-v0170-retest  | print_info: n_vocab          = 32000
+ollama-v0170-retest  | print_info: n_merges         = 0
+ollama-v0170-retest  | print_info: BOS token        = 1 '<s>'
+ollama-v0170-retest  | print_info: EOS token        = 2 '</s>'
+ollama-v0170-retest  | print_info: UNK token        = 0 '<unk>'
+ollama-v0170-retest  | print_info: PAD token        = 2 '</s>'
+ollama-v0170-retest  | print_info: LF token         = 13 '<0x0A>'
+ollama-v0170-retest  | print_info: EOG token        = 2 '</s>'
+ollama-v0170-retest  | print_info: max token length = 48
+ollama-v0170-retest  | load_tensors: loading model tensors, this can take a while... (mmap = false)
+ollama-v0170-retest  | load_tensors:          CPU model buffer size =   606.53 MiB
+ollama-v0170-retest  | llama_context: constructing llama_context
+ollama-v0170-retest  | llama_context: n_seq_max     = 1
+ollama-v0170-retest  | llama_context: n_ctx         = 2048
+ollama-v0170-retest  | llama_context: n_ctx_seq     = 2048
+ollama-v0170-retest  | llama_context: n_batch       = 512
+ollama-v0170-retest  | llama_context: n_ubatch      = 512
+ollama-v0170-retest  | llama_context: causal_attn   = 1
+ollama-v0170-retest  | llama_context: flash_attn    = auto
+ollama-v0170-retest  | llama_context: kv_unified    = false
+ollama-v0170-retest  | llama_context: freq_base     = 10000.0
+ollama-v0170-retest  | llama_context: freq_scale    = 1
+ollama-v0170-retest  | llama_context:        CPU  output buffer size =     0.13 MiB
+ollama-v0170-retest  | llama_kv_cache:        CPU KV buffer size =    44.00 MiB
+ollama-v0170-retest  | llama_kv_cache: size =   44.00 MiB (  2048 cells,  22 layers,  1/1 seqs), K (f16):   22.00 MiB, V (f16):   22.00 MiB
+ollama-v0170-retest  | llama_context: Flash Attention was auto, set to enabled
+ollama-v0170-retest  | llama_context:        CPU compute buffer size =    66.50 MiB
+ollama-v0170-retest  | llama_context: graph nodes  = 689
+ollama-v0170-retest  | llama_context: graph splits = 1
+ollama-v0170-retest  | time=2026-02-25T21:12:27.773Z level=INFO source=server.go:1388 msg="llama runner started in 1.07 seconds"
+ollama-v0170-retest  | time=2026-02-25T21:12:27.773Z level=INFO source=sched.go:566 msg="loaded runners" count=1
+ollama-v0170-retest  | time=2026-02-25T21:12:27.774Z level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+ollama-v0170-retest  | time=2026-02-25T21:12:27.774Z level=INFO source=server.go:1388 msg="llama runner started in 1.07 seconds"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 21:12:56 | 500 | 30.011405263s |     172.64.66.1 | POST     "/api/generate"

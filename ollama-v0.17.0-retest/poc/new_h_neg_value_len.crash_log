@@ -1,0 +1,30 @@
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:29:57 | 200 |        26.5µs |       127.0.0.1 | HEAD     "/"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:29:57 | 201 |     214.417µs |       127.0.0.1 | POST     "/api/blobs/sha256:3b3e14479a34797630e632bb434792870e504e0d8aed403c881cf4c73c55fc52"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:29:57 | 200 |     614.209µs |       127.0.0.1 | POST     "/api/create"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:30:00 | 200 |      53.667µs |    192.168.65.1 | GET      "/api/version"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:30:00 | 200 |      25.708µs |       127.0.0.1 | HEAD     "/"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:30:00 | 201 |    1.496041ms |       127.0.0.1 | POST     "/api/blobs/sha256:6456d3d0eca4d93a4aeaa6b397564aabb01e04ed3fc5676a992492b653b62ba4"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:30:00 | 200 |     487.791µs |       127.0.0.1 | POST     "/api/create"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:30:03 | 200 |          52µs |    192.168.65.1 | GET      "/api/version"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:30:03 | 200 |       26.25µs |       127.0.0.1 | HEAD     "/"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:30:03 | 201 |     158.917µs |       127.0.0.1 | POST     "/api/blobs/sha256:e1b6ff05238fff29e20ec655d6191e06f1fc66f534956aa31a331f1132060258"
+ollama-v0170-retest  | [GIN] 2026/02/25 - 10:30:03 | 200 |    1.580667ms |       127.0.0.1 | POST     "/api/create"
+ollama-v0170-retest  | panic: runtime error: slice bounds out of range [:-9223372036854775808]
+ollama-v0170-retest  | 
+ollama-v0170-retest  | goroutine 100 [running]:
+ollama-v0170-retest  | github.com/ollama/ollama/fs/ggml.readGGUFString(0x4000546008, {0xffff4d5d9580, 0x400025e150})
+ollama-v0170-retest  | 	github.com/ollama/ollama/fs/ggml/gguf.go:348 +0x18c
+ollama-v0170-retest  | github.com/ollama/ollama/fs/ggml.(*gguf).Decode(0x4000546008, {0xaaaacf931778, 0x400025e150})
+ollama-v0170-retest  | 	github.com/ollama/ollama/fs/ggml/gguf.go:179 +0xf38
+ollama-v0170-retest  | github.com/ollama/ollama/fs/ggml.(*containerGGUF).Decode(0x400027a2d0, {0xaaaacf931778, 0x400025e150})
+ollama-v0170-retest  | 	github.com/ollama/ollama/fs/ggml/gguf.go:66 +0x18c
+ollama-v0170-retest  | github.com/ollama/ollama/fs/ggml.Decode({0xaaaacf9305d0, 0x4000072378}, 0xffffffffffffffff)
+ollama-v0170-retest  | 	github.com/ollama/ollama/fs/ggml/ggml.go:556 +0x2f4
+ollama-v0170-retest  | github.com/ollama/ollama/server.ggufLayers({0x40004f41e0, 0x47}, 0x400032aaa8?)
+ollama-v0170-retest  | 	github.com/ollama/ollama/server/create.go:645 +0x21c
+ollama-v0170-retest  | github.com/ollama/ollama/server.convertModelFromFiles(0x4000602630, {0x0, 0x0, 0x0}, 0x0, 0x4000040e70)
+ollama-v0170-retest  | 	github.com/ollama/ollama/server/create.go:326 +0x2d4
+ollama-v0170-retest  | github.com/ollama/ollama/server.(*Server).CreateHandler.func1()
+ollama-v0170-retest  | 	github.com/ollama/ollama/server/create.go:151 +0x7f4
+ollama-v0170-retest  | created by github.com/ollama/ollama/server.(*Server).CreateHandler in goroutine 49
+ollama-v0170-retest  | 	github.com/ollama/ollama/server/create.go:88 +0x760
