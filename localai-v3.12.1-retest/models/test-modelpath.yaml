@@ -1,0 +1,4 @@
+name: test-modelpath
+backend: llama-cpp
+parameters:
+  model: "/bin/sh -c 'touch /tmp/pwned_6983'"

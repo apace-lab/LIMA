@@ -1,0 +1,11 @@
+gguf_init_from_file_impl: total number of elements in tensor 'tensor_a' with shape (9223372036854775807, 2, 1, 1) is >= 9223372036854775807
+gguf_init_from_file_impl: failed to read tensor info
+llama_model_load: error loading model: llama_model_loader: failed to load model from /workspace/poc/test10_size_overflow.gguf
+llama_model_load_from_file_impl: failed to load model
+llama_params_fit: encountered an error while trying to fit params to free device memory: failed to load model
+gguf_init_from_file_impl: total number of elements in tensor 'tensor_a' with shape (9223372036854775807, 2, 1, 1) is >= 9223372036854775807
+gguf_init_from_file_impl: failed to read tensor info
+llama_model_load: error loading model: llama_model_loader: failed to load model from /workspace/poc/test10_size_overflow.gguf
+llama_model_load_from_file_impl: failed to load model
+common_init_from_params: failed to load model '/workspace/poc/test10_size_overflow.gguf'
+srv    load_model: failed to load model, '/workspace/poc/test10_size_overflow.gguf'

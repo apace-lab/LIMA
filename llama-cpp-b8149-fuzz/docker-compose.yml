@@ -1,0 +1,7 @@
+services:
+  llama-fuzz:
+    build: .
+    container_name: llama-b8149-fuzz
+    volumes:
+      - ./poc:/workspace/poc
+    entrypoint: ["sleep", "infinity"]

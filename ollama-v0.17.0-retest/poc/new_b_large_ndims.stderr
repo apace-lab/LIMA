@@ -1,0 +1,4 @@
+[?2026h[?25l[1Ggathering model components [K
+copying file sha256:7b3938c3d2bcf700e9125241a469ef0bde8286063f7df4804a99505c589362d3 100% [K
+parsing GGUF [K[?25h[?2026l
+Error: failed to read tensor shape: EOF

@@ -1,0 +1,12 @@
+services:
+  localai:
+    image: localai/localai:v3.12.1
+    container_name: localai-v3121-retest
+    ports:
+      - "11480:8080"
+    volumes:
+      - ./models:/build/models
+      - ./poc:/workspace/poc
+    environment:
+      - THREADS=2
+      - DEBUG=true

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "nested_quantifiers",
+    "description": "Pattern (a+)+ with backtracking input",
+    "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!"
+  },
+  {
+    "name": "json_like_backtrack",
+    "description": "JSON-like pattern that causes backtracking in tool parsers",
+    "input": "{\"name\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"arguments\": {\"key\": \"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"                    "
+  },
+  {
+    "name": "xml_tag_backtrack",
+    "description": "XML-like pattern for tool call parsers",
+    "input": "<tool_call><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested><nested>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  }
+]

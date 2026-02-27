@@ -1,0 +1,10 @@
+services:
+  llama-grammar-fuzz:
+    build:
+      context: .
+      dockerfile: Dockerfile.grammar
+    container_name: llama-b8149-grammar
+    volumes:
+      - ./poc:/workspace/poc
+      - ./grammar_tests:/workspace/grammar_tests
+    entrypoint: ["sleep", "infinity"]

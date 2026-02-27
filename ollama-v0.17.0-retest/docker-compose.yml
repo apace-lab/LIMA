@@ -1,0 +1,15 @@
+services:
+  ollama:
+    image: ollama/ollama:0.17.0
+    container_name: ollama-v0170-retest
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    ports:
+      - "11460:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./poc:/poc
+    restart: "no"
+
+volumes:
+  ollama_data:
