@@ -1,7 +1,12 @@
 #!/bin/bash
 # ══════════════════════════════════════════════════════════════
 # Full Cross-Framework Vulnerability Pattern Testing
-# Tests ALL patterns from 68 CVEs against ALL 4 repos
+# Tests 69 CVEs across 5 root cause categories:
+#   Unsafe Model File Parsing  — 19 CVEs
+#   Untrusted Code Execution   — 14 CVEs
+#   Resource Exhaustion / DoS  — 22 CVEs
+#   Insufficient Access Control — 10 CVEs
+#   Information Leakage         —  3 CVEs
 # See CROSS_FRAMEWORK_PATTERNS.md for methodology
 # ══════════════════════════════════════════════════════════════
 set +e  # Don't abort on errors
@@ -46,24 +51,26 @@ python3 "$DIR/generate_all_payloads.py" "$DIR/payloads"
 echo ""
 
 # ╔══════════════════════════════════════════════════════════════╗
-# ║  LOCALAI v3.12.1 — Test P1, P2, P8, P10, P11               ║
+# ║  LOCALAI v3.12.1                                            ║
+# ║  Unsafe Parsing: Integer Overflow, Heap Overflow, Null Ptr  ║
+# ║  Resource Exhaustion, Path Traversal                        ║
 # ╚══════════════════════════════════════════════════════════════╝
 echo "=============================================="
 echo "FRAMEWORK: LocalAI v3.12.1"
-echo "Patterns: P1 (narrow cast), P2 (heap overflow),"
-echo "          P8 (recursion), P10 (null ptr), P11 (resource)"
+echo "Unsafe Parsing: Integer Overflow, Heap Overflow, Null Pointer"
+echo "Resource Exhaustion, Path Traversal"
 echo "=============================================="
 
-cd "$LIMA_DIR/localai-v3.12.1-retest"
+cd "$LIMA_DIR/LocalAI/localai-v3.12.1-retest"
 docker compose up -d 2>/dev/null
 if ! wait_for_service "http://localhost:$LOCALAI_PORT/readyz" 30 "LocalAI"; then
     log_result "ALL" "LocalAI" "startup" "SKIPPED" "Container failed to start"
 else
     CONTAINER_LAI=localai-v3121-retest
 
-    # ── P1: Integer Overflow / Narrow Casting → LocalAI ──
+    # ── Integer Overflow / Narrow Casting → LocalAI ──
     echo ""
-    echo "--- P1: Integer Overflow / Narrow Casting → LocalAI ---"
+    echo "--- Integer Overflow / Narrow Casting → LocalAI ---"
 
     for gguf in p1a_negative_key_length p1b_negative_array_count p1c_negative_value_length; do
         echo "  Testing $gguf..."
@@ -92,19 +99,19 @@ YAML" 2>/dev/null
         EXIT_CODE=$(docker inspect $CONTAINER_LAI --format '{{.State.ExitCode}}' 2>/dev/null || echo "0")
 
         if [ "$OOM" = "true" ] || [ "$RUNNING" = "false" ] || ! curl -sf "http://localhost:$LOCALAI_PORT/readyz" > /dev/null 2>&1; then
-            log_result "P1" "LocalAI" "$gguf" "CRASHED" "Server crashed (OOM=$OOM exit=$EXIT_CODE)"
+            log_result "Integer Overflow" "LocalAI" "$gguf" "CRASHED" "Server crashed (OOM=$OOM exit=$EXIT_CODE)"
             docker compose up -d 2>/dev/null
             wait_for_service "http://localhost:$LOCALAI_PORT/readyz" 30 "LocalAI"
         elif [ "$PANIC" -gt 0 ]; then
-            log_result "P1" "LocalAI" "$gguf" "PANIC_RECOVERED" "Go panic caught by recover()"
+            log_result "Integer Overflow" "LocalAI" "$gguf" "PANIC_RECOVERED" "Go panic caught by recover()"
         else
-            log_result "P1" "LocalAI" "$gguf" "NOT_VULNERABLE" "Server survived"
+            log_result "Integer Overflow" "LocalAI" "$gguf" "NOT_VULNERABLE" "Server survived"
         fi
     done
 
-    # ── P2: Heap Buffer Overflow → LocalAI ──
+    # ── Heap Buffer Overflow → LocalAI ──
     echo ""
-    echo "--- P2: Heap Buffer Overflow (GGUF) → LocalAI ---"
+    echo "--- Heap Buffer Overflow (GGUF) → LocalAI ---"
 
     for gguf in p2a_large_n_kv p2b_large_n_tensors p2c_small_vocab p2d_large_key_length; do
         echo "  Testing $gguf..."
@@ -130,23 +137,23 @@ YAML" 2>/dev/null
         RUNNING=$(docker inspect $CONTAINER_LAI --format '{{.State.Running}}' 2>/dev/null || echo "false")
 
         if [ "$OOM" = "true" ]; then
-            log_result "P2" "LocalAI" "$gguf" "CRASHED" "OOMKilled=true exit=$EXIT_CODE — GGUF triggered fatal OOM"
+            log_result "Heap Overflow" "LocalAI" "$gguf" "CRASHED" "OOMKilled=true exit=$EXIT_CODE — GGUF triggered fatal OOM"
             docker compose up -d 2>/dev/null
             wait_for_service "http://localhost:$LOCALAI_PORT/readyz" 30 "LocalAI"
         elif [ "$RUNNING" = "false" ] || ! curl -sf "http://localhost:$LOCALAI_PORT/readyz" > /dev/null 2>&1; then
-            log_result "P2" "LocalAI" "$gguf" "CRASHED" "Server crashed (exit=$EXIT_CODE)"
+            log_result "Heap Overflow" "LocalAI" "$gguf" "CRASHED" "Server crashed (exit=$EXIT_CODE)"
             docker compose up -d 2>/dev/null
             wait_for_service "http://localhost:$LOCALAI_PORT/readyz" 30 "LocalAI"
         elif [ "$PANIC" -gt 0 ]; then
-            log_result "P2" "LocalAI" "$gguf" "PANIC_RECOVERED" "Go panic caught by recover()"
+            log_result "Heap Overflow" "LocalAI" "$gguf" "PANIC_RECOVERED" "Go panic caught by recover()"
         else
-            log_result "P2" "LocalAI" "$gguf" "NOT_VULNERABLE" "Server survived"
+            log_result "Heap Overflow" "LocalAI" "$gguf" "NOT_VULNERABLE" "Server survived"
         fi
     done
 
-    # ── P10: Null Pointer / Truncated → LocalAI ──
+    # ── Null Pointer / Truncated → LocalAI ──
     echo ""
-    echo "--- P10: Null Pointer / Truncated GGUF → LocalAI ---"
+    echo "--- Null Pointer / Truncated GGUF → LocalAI ---"
 
     for gguf in p10a_truncated_magic p10b_null_tensor_name p10c_truncated_after_header; do
         echo "  Testing $gguf..."
@@ -167,19 +174,19 @@ YAML" 2>/dev/null
         PANIC=$(docker compose logs --tail 10 2>&1 | grep -ci "panic\|fatal\|SEGV\|SIGSEGV\|signal\|runtime error" || true)
 
         if ! curl -sf "http://localhost:$LOCALAI_PORT/readyz" > /dev/null 2>&1; then
-            log_result "P10" "LocalAI" "$gguf" "CRASHED" "Server crashed"
+            log_result "Null Pointer" "LocalAI" "$gguf" "CRASHED" "Server crashed"
             docker compose restart 2>/dev/null
             wait_for_service "http://localhost:$LOCALAI_PORT/readyz" 30 "LocalAI"
         elif [ "$PANIC" -gt 0 ]; then
-            log_result "P10" "LocalAI" "$gguf" "PANIC_RECOVERED" "Go panic caught by recover()"
+            log_result "Null Pointer" "LocalAI" "$gguf" "PANIC_RECOVERED" "Go panic caught by recover()"
         else
-            log_result "P10" "LocalAI" "$gguf" "NOT_VULNERABLE" "Server survived"
+            log_result "Null Pointer" "LocalAI" "$gguf" "NOT_VULNERABLE" "Server survived"
         fi
     done
 
-    # ── P11: Resource Exhaustion → LocalAI ──
+    # ── Resource Exhaustion → LocalAI ──
     echo ""
-    echo "--- P11: Resource Exhaustion → LocalAI ---"
+    echo "--- Resource Exhaustion → LocalAI ---"
 
     for gguf in p11a_zero_alignment p11b_huge_dims p11c_zero_block_count; do
         echo "  Testing $gguf..."
@@ -200,19 +207,19 @@ YAML" 2>/dev/null
         PANIC=$(docker compose logs --tail 10 2>&1 | grep -ci "panic\|fatal\|SEGV\|SIGSEGV\|signal\|runtime error\|divide.*zero\|division" || true)
 
         if ! curl -sf "http://localhost:$LOCALAI_PORT/readyz" > /dev/null 2>&1; then
-            log_result "P11" "LocalAI" "$gguf" "CRASHED" "Server crashed"
+            log_result "Resource Exhaustion" "LocalAI" "$gguf" "CRASHED" "Server crashed"
             docker compose restart 2>/dev/null
             wait_for_service "http://localhost:$LOCALAI_PORT/readyz" 30 "LocalAI"
         elif [ "$PANIC" -gt 0 ]; then
-            log_result "P11" "LocalAI" "$gguf" "PANIC_RECOVERED" "Go panic caught by recover()"
+            log_result "Resource Exhaustion" "LocalAI" "$gguf" "PANIC_RECOVERED" "Go panic caught by recover()"
         else
-            log_result "P11" "LocalAI" "$gguf" "NOT_VULNERABLE" "Server survived"
+            log_result "Resource Exhaustion" "LocalAI" "$gguf" "NOT_VULNERABLE" "Server survived"
         fi
     done
 
-    # ── P11d: Extreme API parameters → LocalAI ──
+    # ── Resource Exhaustion: Extreme API parameters → LocalAI ──
     echo ""
-    echo "  Testing P11d: extreme API parameters..."
+    echo "  Testing extreme API parameters..."
     RESP=$(curl -s -X POST "http://localhost:$LOCALAI_PORT/v1/chat/completions" \
         -H "Content-Type: application/json" \
         --max-time 15 \
@@ -220,16 +227,16 @@ YAML" 2>/dev/null
         2>&1 || echo "TIMEOUT")
     sleep 2
     if ! curl -sf "http://localhost:$LOCALAI_PORT/readyz" > /dev/null 2>&1; then
-        log_result "P11" "LocalAI" "extreme_api_params" "CRASHED" "Server crashed on extreme params"
+        log_result "Resource Exhaustion" "LocalAI" "extreme_api_params" "CRASHED" "Server crashed on extreme params"
         docker compose restart 2>/dev/null
         wait_for_service "http://localhost:$LOCALAI_PORT/readyz" 30 "LocalAI"
     else
-        log_result "P11" "LocalAI" "extreme_api_params" "NOT_VULNERABLE" "Server survived"
+        log_result "Resource Exhaustion" "LocalAI" "extreme_api_params" "NOT_VULNERABLE" "Server survived"
     fi
 
-    # ── P5: Path Traversal → LocalAI ──
+    # ── Path Traversal → LocalAI ──
     echo ""
-    echo "--- P5: Path Traversal → LocalAI ---"
+    echo "--- Path Traversal → LocalAI ---"
     while IFS= read -r payload; do
         [ -z "$payload" ] && continue
         echo "  Testing: $payload"
@@ -241,7 +248,7 @@ YAML" 2>/dev/null
             2>&1 || true)
         # Check if response leaks file content
         if echo "$RESP" | grep -qi "root:.*:0:0\|shadow\|no such file\|permission denied\|is a directory"; then
-            log_result "P5" "LocalAI" "model_name_traversal" "POSSIBLE" "Response contains file info: $(echo "$RESP" | head -c 100)"
+            log_result "Path Traversal" "LocalAI" "model_name_traversal" "POSSIBLE" "Response contains file info: $(echo "$RESP" | head -c 100)"
         fi
     done < "$DIR/payloads/p5_traversal_payloads.txt"
 
@@ -252,9 +259,9 @@ YAML" 2>/dev/null
         -d '{"url":"file:///etc/passwd"}' \
         2>&1 || true)
     if echo "$RESP" | grep -qi "root:.*:0:0\|shadow"; then
-        log_result "P5" "LocalAI" "models_apply_lfi" "VULNERABLE" "LFI via file:// confirmed"
+        log_result "Path Traversal" "LocalAI" "models_apply_lfi" "VULNERABLE" "LFI via file:// confirmed"
     else
-        log_result "P5" "LocalAI" "models_apply_lfi" "NOT_VULNERABLE" "No file content leaked"
+        log_result "Path Traversal" "LocalAI" "models_apply_lfi" "NOT_VULNERABLE" "No file content leaked"
     fi
 
     # Collect all LocalAI logs
@@ -266,18 +273,18 @@ echo "Stopping LocalAI..."
 docker compose down 2>/dev/null
 
 # ╔══════════════════════════════════════════════════════════════╗
-# ║  LLAMA.CPP b8149 — Test P5, P7, P11                        ║
+# ║  LLAMA.CPP b8149                                            ║
+# ║  ReDoS, Resource Exhaustion, Path Traversal, No Auth        ║
 # ╚══════════════════════════════════════════════════════════════╝
 echo ""
 echo "=============================================="
 echo "FRAMEWORK: llama.cpp b8149 (llama-server)"
-echo "Patterns: P5 (path traversal), P7 (ReDoS),"
-echo "          P9 (no auth), P11 (resource exhaustion)"
+echo "ReDoS, Resource Exhaustion, Path Traversal, No Auth"
 echo "=============================================="
 
 # Check if llama-cpp grammar test environment exists
-if [ -f "$LIMA_DIR/llama-cpp-b8149-fuzz/docker-compose.grammar.yml" ]; then
-    cd "$LIMA_DIR/llama-cpp-b8149-fuzz"
+if [ -f "$LIMA_DIR/llama-cpp/llama-cpp-b8149-fuzz/docker-compose.grammar.yml" ]; then
+    cd "$LIMA_DIR/llama-cpp/llama-cpp-b8149-fuzz"
 
     # Start container with llama-server
     docker compose -f docker-compose.grammar.yml up -d 2>/dev/null
@@ -322,17 +329,17 @@ if [ -f "$LIMA_DIR/llama-cpp-b8149-fuzz/docker-compose.grammar.yml" ]; then
         if [ "$SERVER_UP" = "yes" ]; then
             echo "  llama-server running inside container"
 
-            # ── P9: No Auth → llama-cpp ──
+            # ── No Auth → llama-cpp ──
             echo ""
-            echo "--- P9: No Authentication → llama-cpp ---"
+            echo "--- No Authentication → llama-cpp ---"
             RESP=$(docker exec $CONTAINER_LLAMA curl -s http://127.0.0.1:8080/health 2>&1)
             if echo "$RESP" | grep -q "ok\|status"; then
-                log_result "P9" "llama-cpp" "no_auth" "VULNERABLE" "API accessible without auth (by design)"
+                log_result "No Auth" "llama-cpp" "no_auth" "VULNERABLE" "API accessible without auth (by design)"
             fi
 
-            # ── P11: Resource Exhaustion → llama-cpp ──
+            # ── Resource Exhaustion → llama-cpp ──
             echo ""
-            echo "--- P11: Resource Exhaustion API params → llama-cpp ---"
+            echo "--- Resource Exhaustion API params → llama-cpp ---"
             echo "  Testing extreme n_predict..."
             RESP=$(docker exec $CONTAINER_LLAMA curl -s -X POST http://127.0.0.1:8080/completion \
                 -H "Content-Type: application/json" \
@@ -341,9 +348,9 @@ if [ -f "$LIMA_DIR/llama-cpp-b8149-fuzz/docker-compose.grammar.yml" ]; then
             sleep 2
             HEALTH=$(docker exec $CONTAINER_LLAMA curl -sf http://127.0.0.1:8080/health 2>/dev/null && echo "ok" || echo "dead")
             if [ "$HEALTH" = "dead" ]; then
-                log_result "P11" "llama-cpp" "extreme_n_predict" "CRASHED" "Server died on extreme n_predict"
+                log_result "Resource Exhaustion" "llama-cpp" "extreme_n_predict" "CRASHED" "Server died on extreme n_predict"
             else
-                log_result "P11" "llama-cpp" "extreme_n_predict" "NOT_VULNERABLE" "Server survived"
+                log_result "Resource Exhaustion" "llama-cpp" "extreme_n_predict" "NOT_VULNERABLE" "Server survived"
             fi
 
             echo "  Testing n_predict=-1 (unlimited)..."
@@ -354,27 +361,27 @@ if [ -f "$LIMA_DIR/llama-cpp-b8149-fuzz/docker-compose.grammar.yml" ]; then
             sleep 2
             HEALTH=$(docker exec $CONTAINER_LLAMA curl -sf http://127.0.0.1:8080/health 2>/dev/null && echo "ok" || echo "dead")
             if [ "$HEALTH" = "dead" ]; then
-                log_result "P11" "llama-cpp" "negative_n_predict" "CRASHED" "Server died on n_predict=-1"
+                log_result "Resource Exhaustion" "llama-cpp" "negative_n_predict" "CRASHED" "Server died on n_predict=-1"
             else
-                log_result "P11" "llama-cpp" "negative_n_predict" "NOT_VULNERABLE" "Server survived"
+                log_result "Resource Exhaustion" "llama-cpp" "negative_n_predict" "NOT_VULNERABLE" "Server survived"
             fi
 
-            # ── P5: Path Traversal → llama-cpp ──
+            # ── Path Traversal → llama-cpp ──
             echo ""
-            echo "--- P5: Path Traversal → llama-cpp ---"
+            echo "--- Path Traversal → llama-cpp ---"
             # llama-server's /slots and other endpoints
             for path_payload in "../../etc/passwd" "../../../etc/passwd" "/etc/passwd"; do
                 RESP=$(docker exec $CONTAINER_LLAMA curl -s "http://127.0.0.1:8080/${path_payload}" 2>&1 || true)
                 if echo "$RESP" | grep -qi "root:.*:0:0"; then
-                    log_result "P5" "llama-cpp" "url_path_traversal" "VULNERABLE" "Path traversal: $path_payload returned file content"
+                    log_result "Path Traversal" "llama-cpp" "url_path_traversal" "VULNERABLE" "Path traversal: $path_payload returned file content"
                     break
                 fi
             done
-            log_result "P5" "llama-cpp" "url_path_traversal" "NOT_VULNERABLE" "No file content leaked"
+            log_result "Path Traversal" "llama-cpp" "url_path_traversal" "NOT_VULNERABLE" "No file content leaked"
 
-            # ── P7: ReDoS → llama-cpp ──
+            # ── ReDoS → llama-cpp ──
             echo ""
-            echo "--- P7: ReDoS → llama-cpp ---"
+            echo "--- ReDoS → llama-cpp ---"
             # llama-server doesn't have tool parsers like vLLM, but test grammar with regex-like patterns
             echo "  Testing grammar with repetitive patterns..."
             RESP=$(docker exec $CONTAINER_LLAMA curl -s -X POST http://127.0.0.1:8080/completion \
@@ -384,9 +391,9 @@ if [ -f "$LIMA_DIR/llama-cpp-b8149-fuzz/docker-compose.grammar.yml" ]; then
                 2>&1 || echo "TIMEOUT")
             HEALTH=$(docker exec $CONTAINER_LLAMA curl -sf http://127.0.0.1:8080/health 2>/dev/null && echo "ok" || echo "dead")
             if [ "$HEALTH" = "dead" ]; then
-                log_result "P7" "llama-cpp" "grammar_regex" "CRASHED" "Server died on regex-like grammar"
+                log_result "ReDoS" "llama-cpp" "grammar_regex" "CRASHED" "Server died on regex-like grammar"
             else
-                log_result "P7" "llama-cpp" "grammar_regex" "NOT_VULNERABLE" "Server survived"
+                log_result "ReDoS" "llama-cpp" "grammar_regex" "NOT_VULNERABLE" "Server survived"
             fi
 
         else
@@ -406,26 +413,26 @@ else
 fi
 
 # ╔══════════════════════════════════════════════════════════════╗
-# ║  OLLAMA v0.17.0 — Test P11 (resource exhaustion via GGUF)  ║
+# ║  OLLAMA v0.17.0 — Resource Exhaustion via GGUF             ║
 # ╚══════════════════════════════════════════════════════════════╝
 echo ""
 echo "=============================================="
 echo "FRAMEWORK: Ollama v0.17.0"
-echo "Patterns: P11 (resource exhaustion via GGUF)"
-echo "Note: P1/P2/P10 already confirmed in Ollama."
-echo "      P8 tested — protected by Go json depth limit."
+echo "Resource Exhaustion (via GGUF)"
+echo "Note: Integer Overflow, Heap Overflow, Null Pointer already confirmed."
+echo "      Recursion tested — protected by Go json depth limit."
 echo "=============================================="
 
-cd "$LIMA_DIR/ollama-v0.17.0-retest"
+cd "$LIMA_DIR/Ollama/ollama-v0.17.0-retest"
 docker compose up -d 2>/dev/null
 if ! wait_for_service "http://localhost:$OLLAMA_PORT/api/version" 15 "Ollama"; then
     log_result "ALL" "Ollama" "startup" "SKIPPED" "Container failed to start"
 else
-    # ── P11: Resource Exhaustion → Ollama ──
+    # ── Resource Exhaustion → Ollama ──
     # CVE-2025-0317 (alignment=0), CVE-2025-0315 (huge dims), CVE-2024-8063 (block_count=0)
     # These are KNOWN Ollama CVEs — testing to confirm they still work on v0.17.0
     echo ""
-    echo "--- P11: Resource Exhaustion GGUF → Ollama ---"
+    echo "--- Resource Exhaustion GGUF → Ollama ---"
 
     for gguf in p11a_zero_alignment p11b_huge_dims p11c_zero_block_count; do
         echo "  Testing $gguf..."
@@ -444,13 +451,13 @@ else
         sleep 2
 
         if ! curl -sf "http://localhost:$OLLAMA_PORT/api/version" > /dev/null 2>&1; then
-            log_result "P11" "Ollama" "$gguf" "CRASHED" "Server crashed"
+            log_result "Resource Exhaustion" "Ollama" "$gguf" "CRASHED" "Server crashed"
             docker compose restart 2>/dev/null
             wait_for_service "http://localhost:$OLLAMA_PORT/api/version" 15 "Ollama"
         elif echo "$RESP" | grep -qi "error\|panic"; then
-            log_result "P11" "Ollama" "$gguf" "ERROR_RETURNED" "$(echo "$RESP" | head -c 150)"
+            log_result "Resource Exhaustion" "Ollama" "$gguf" "ERROR_RETURNED" "$(echo "$RESP" | head -c 150)"
         else
-            log_result "P11" "Ollama" "$gguf" "NOT_VULNERABLE" "Server survived"
+            log_result "Resource Exhaustion" "Ollama" "$gguf" "NOT_VULNERABLE" "Server survived"
         fi
     done
 
@@ -495,19 +502,19 @@ echo ""
 
 # Print previously confirmed results (not tested here)
 echo "Previously confirmed (from earlier sessions):"
-echo "  P1 → Ollama v0.17.0:    CRASHED (LIMA-NEW-001/002)"
-echo "  P1 → llama-cpp b8149:   NOT_VULNERABLE (hardened)"
-echo "  P2 → Ollama v0.17.0:    CRASHED (multiple CVEs)"
-echo "  P2 → llama-cpp b8149:   NOT_VULNERABLE (hardened)"
-echo "  P3 → vLLM:              VULNERABLE (7 pickle CVEs)"
-echo "  P4 → LocalAI:           VULNERABLE (3 injection CVEs)"
-echo "  P4 → llama-cpp:         VULNERABLE (Jinja2 SSTI)"
-echo "  P4 → vLLM:              VULNERABLE (ZMQ + torch.load)"
-echo "  P8 → llama-cpp b8149:   CRASHED (LIMA-NEW-003/004)"
-echo "  P8 → Ollama v0.17.0:    NOT_VULNERABLE (Go json depth limit)"
-echo "  P8 → vLLM:              CRASHED (3 xgrammar CVEs)"
-echo "  P12 → LocalAI:          VULNERABLE (LIMA-NEW-006)"
-echo "  P12 → Ollama:           NOT_VULNERABLE (no Sprig)"
+echo "  Integer Overflow    → Ollama v0.17.0:  CRASHED (LIMA-NEW-001/002)"
+echo "  Integer Overflow    → llama-cpp b8149: NOT_VULNERABLE (hardened)"
+echo "  Heap Overflow       → Ollama v0.17.0:  CRASHED (multiple CVEs)"
+echo "  Heap Overflow       → llama-cpp b8149: NOT_VULNERABLE (hardened)"
+echo "  Unsafe Deserialize  → vLLM:            VULNERABLE (7 pickle CVEs)"
+echo "  Code Injection      → LocalAI:         VULNERABLE (3 injection CVEs)"
+echo "  Code Injection      → llama-cpp:       VULNERABLE (Jinja2 SSTI)"
+echo "  Code Injection      → vLLM:            VULNERABLE (ZMQ + torch.load)"
+echo "  Recursion           → llama-cpp b8149: CRASHED (LIMA-NEW-003/004)"
+echo "  Recursion           → Ollama v0.17.0:  NOT_VULNERABLE (Go json depth limit)"
+echo "  Recursion           → vLLM:            CRASHED (3 xgrammar CVEs)"
+echo "  SSTI                → LocalAI:         VULNERABLE (LIMA-NEW-006)"
+echo "  SSTI                → Ollama:          NOT_VULNERABLE (no Sprig)"
 echo ""
 echo "Logs saved to: $LOGS_DIR/"
 echo "Results saved to: $RESULTS_FILE"

