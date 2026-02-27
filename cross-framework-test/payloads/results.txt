@@ -1,23 +1,23 @@
-P1 | LocalAI | p1a_negative_key_length | PANIC_RECOVERED | Go panic caught by recover()
-P1 | LocalAI | p1b_negative_array_count | NOT_VULNERABLE | Server survived
-P1 | LocalAI | p1c_negative_value_length | PANIC_RECOVERED | Go panic caught by recover()
-P2 | LocalAI | p2a_large_n_kv | CRASHED | OOMKilled=true exit=137 — GGUF triggered fatal OOM
-P2 | LocalAI | p2b_large_n_tensors | NOT_VULNERABLE | Server survived
-P2 | LocalAI | p2c_small_vocab | NOT_VULNERABLE | Server survived
-P2 | LocalAI | p2d_large_key_length | PANIC_RECOVERED | Go panic caught by recover()
-P10 | LocalAI | p10a_truncated_magic | NOT_VULNERABLE | Server survived
-P10 | LocalAI | p10b_null_tensor_name | NOT_VULNERABLE | Server survived
-P10 | LocalAI | p10c_truncated_after_header | NOT_VULNERABLE | Server survived
-P11 | LocalAI | p11a_zero_alignment | NOT_VULNERABLE | Server survived
-P11 | LocalAI | p11b_huge_dims | NOT_VULNERABLE | Server survived
-P11 | LocalAI | p11c_zero_block_count | NOT_VULNERABLE | Server survived
-P11 | LocalAI | extreme_api_params | NOT_VULNERABLE | Server survived
-P5 | LocalAI | models_apply_lfi | NOT_VULNERABLE | No file content leaked
-P9 | llama-cpp | no_auth | VULNERABLE | API accessible without auth (by design)
-P11 | llama-cpp | extreme_n_predict | NOT_VULNERABLE | Server survived (clamped n_predict)
-P11 | llama-cpp | negative_n_predict | NOT_VULNERABLE | Server survived (n_predict=-1 generates up to n_ctx)
-P5 | llama-cpp | url_path_traversal | NOT_VULNERABLE | No file content leaked
-P7 | llama-cpp | grammar_regex | NOT_VULNERABLE | Server survived
-P11 | Ollama | p11a_zero_alignment | CRASHED | Server crashed
-P11 | Ollama | p11b_huge_dims | NOT_VULNERABLE | Server survived
-P11 | Ollama | p11c_zero_block_count | NOT_VULNERABLE | Server survived
+Integer Overflow | LocalAI | p1a_negative_key_length | PANIC_RECOVERED | Go panic caught by recover()
+Integer Overflow | LocalAI | p1b_negative_array_count | NOT_VULNERABLE | Server survived
+Integer Overflow | LocalAI | p1c_negative_value_length | PANIC_RECOVERED | Go panic caught by recover()
+Heap Overflow | LocalAI | p2a_large_n_kv | NOT_VULNERABLE | Server survived
+Heap Overflow | LocalAI | p2b_large_n_tensors | CRASHED | OOMKilled=true exit=137 — GGUF triggered fatal OOM
+Heap Overflow | LocalAI | p2c_small_vocab | PANIC_RECOVERED | Go panic caught by recover()
+Heap Overflow | LocalAI | p2d_large_key_length | PANIC_RECOVERED | Go panic caught by recover()
+Null Pointer | LocalAI | p10a_truncated_magic | NOT_VULNERABLE | Server survived
+Null Pointer | LocalAI | p10b_null_tensor_name | NOT_VULNERABLE | Server survived
+Null Pointer | LocalAI | p10c_truncated_after_header | NOT_VULNERABLE | Server survived
+Resource Exhaustion | LocalAI | p11a_zero_alignment | NOT_VULNERABLE | Server survived
+Resource Exhaustion | LocalAI | p11b_huge_dims | NOT_VULNERABLE | Server survived
+Resource Exhaustion | LocalAI | p11c_zero_block_count | NOT_VULNERABLE | Server survived
+Resource Exhaustion | LocalAI | extreme_api_params | NOT_VULNERABLE | Server survived
+Path Traversal | LocalAI | models_apply_lfi | NOT_VULNERABLE | No file content leaked
+No Auth | llama-cpp | no_auth | VULNERABLE | API accessible without auth (by design)
+Resource Exhaustion | llama-cpp | extreme_n_predict | NOT_VULNERABLE | Server survived
+Resource Exhaustion | llama-cpp | negative_n_predict | NOT_VULNERABLE | Server survived
+Path Traversal | llama-cpp | url_path_traversal | NOT_VULNERABLE | No file content leaked
+ReDoS | llama-cpp | grammar_regex | NOT_VULNERABLE | Server survived
+Resource Exhaustion | Ollama | p11a_zero_alignment | CRASHED | Server crashed
+Resource Exhaustion | Ollama | p11b_huge_dims | NOT_VULNERABLE | Server survived
+Resource Exhaustion | Ollama | p11c_zero_block_count | NOT_VULNERABLE | Server survived

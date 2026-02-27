@@ -117,7 +117,7 @@ sched_reserve: Flash Attention was auto, set to enabled
 sched_reserve:        CPU compute buffer size =     1.01 MiB
 sched_reserve: graph nodes  = 162
 sched_reserve: graph splits = 1
-sched_reserve: reserve took 1.38 ms, sched copies = 1
+sched_reserve: reserve took 1.81 ms, sched copies = 1
 common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
 srv    load_model: initializing slots, n_slots = 4
 no implementations specified for speculative decoding
@@ -150,3 +150,68 @@ main: model loaded
 main: server is listening on http://0.0.0.0:8080
 main: starting the main loop...
 srv  update_slots: all slots are idle
+slot get_availabl: id  3 | task -1 | selected slot by LRU, t_last = -1
+slot launch_slot_: id  3 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
+slot launch_slot_: id  3 | task 0 | processing task, is_child = 0
+slot update_slots: id  3 | task 0 | new prompt, n_ctx_slot = 256, n_keep = 0, task.n_tokens = 3
+slot update_slots: id  3 | task 0 | n_tokens = 0, memory_seq_rm [0, end)
+slot update_slots: id  3 | task 0 | prompt processing progress, n_tokens = 3, batch.n_tokens = 3, progress = 1.000000
+slot update_slots: id  3 | task 0 | prompt done, n_tokens = 3, batch.n_tokens = 3
+slot init_sampler: id  3 | task 0 | init sampler, took 0.01 ms, tokens: text = 3, total = 3
+slot print_timing: id  3 | task 0 | 
+prompt eval time =      18.38 ms /     3 tokens (    6.13 ms per token,   163.26 tokens per second)
+       eval time =     383.47 ms /   253 tokens (    1.52 ms per token,   659.76 tokens per second)
+      total time =     401.85 ms /   256 tokens
+slot      release: id  3 | task 0 | stop processing: n_tokens = 255, truncated = 1
+srv  update_slots: all slots are idle
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.012
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 255, total state size = 0.159 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.012, sim = 1.000
+srv        update:  - cache state: 1 prompts, 0.159 MiB (limits: 8192.000 MiB, 256 tokens, 13163978 est)
+srv        update:    - prompt 0xaaab143720e0:     255 tokens, checkpoints:  0,     0.159 MiB
+srv  get_availabl: prompt cache update took 0.06 ms
+slot launch_slot_: id  3 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
+slot launch_slot_: id  3 | task 254 | processing task, is_child = 0
+slot update_slots: id  3 | task 254 | new prompt, n_ctx_slot = 256, n_keep = 0, task.n_tokens = 3
+slot update_slots: id  3 | task 254 | need to evaluate at least 1 token for each active slot (n_past = 3, task.n_tokens() = 3)
+slot update_slots: id  3 | task 254 | n_past was set to 2
+slot update_slots: id  3 | task 254 | n_tokens = 2, memory_seq_rm [2, end)
+slot update_slots: id  3 | task 254 | prompt processing progress, n_tokens = 3, batch.n_tokens = 1, progress = 1.000000
+slot update_slots: id  3 | task 254 | prompt done, n_tokens = 3, batch.n_tokens = 1
+slot init_sampler: id  3 | task 254 | init sampler, took 0.00 ms, tokens: text = 3, total = 3
+slot print_timing: id  3 | task 254 | 
+prompt eval time =       5.79 ms /     1 tokens (    5.79 ms per token,   172.56 tokens per second)
+       eval time =     171.07 ms /    32 tokens (    5.35 ms per token,   187.05 tokens per second)
+      total time =     176.87 ms /    33 tokens
+slot      release: id  3 | task 254 | stop processing: n_tokens = 34, truncated = 0
+srv  update_slots: all slots are idle
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: GET /etc/passwd 127.0.0.1 404
+srv  log_server_r: done request: GET /etc/passwd 127.0.0.1 404
+srv  log_server_r: done request: GET //etc/passwd 127.0.0.1 404
+slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.088
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 34, total state size = 0.021 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.088, sim = 1.000
+srv        update:  - cache state: 2 prompts, 0.180 MiB (limits: 8192.000 MiB, 256 tokens, 13155756 est)
+srv        update:    - prompt 0xaaab143720e0:     255 tokens, checkpoints:  0,     0.159 MiB
+srv        update:    - prompt 0xaaab14378510:      34 tokens, checkpoints:  0,     0.021 MiB
+srv  get_availabl: prompt cache update took 0.02 ms
+slot launch_slot_: id  3 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
+slot launch_slot_: id  3 | task 287 | processing task, is_child = 0
+slot update_slots: id  3 | task 287 | new prompt, n_ctx_slot = 256, n_keep = 0, task.n_tokens = 3
+slot update_slots: id  3 | task 287 | need to evaluate at least 1 token for each active slot (n_past = 3, task.n_tokens() = 3)
+slot update_slots: id  3 | task 287 | n_past was set to 2
+slot update_slots: id  3 | task 287 | n_tokens = 2, memory_seq_rm [2, end)
+slot update_slots: id  3 | task 287 | prompt processing progress, n_tokens = 3, batch.n_tokens = 1, progress = 1.000000
+slot update_slots: id  3 | task 287 | prompt done, n_tokens = 3, batch.n_tokens = 1
+slot init_sampler: id  3 | task 287 | init sampler, took 0.00 ms, tokens: text = 3, total = 3
+slot print_timing: id  3 | task 287 | 
+prompt eval time =      18.29 ms /     1 tokens (   18.29 ms per token,    54.69 tokens per second)
+       eval time =     111.14 ms /    10 tokens (   11.11 ms per token,    89.98 tokens per second)
+      total time =     129.42 ms /    11 tokens
+slot      release: id  3 | task 287 | stop processing: n_tokens = 12, truncated = 0
+srv  update_slots: all slots are idle
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
