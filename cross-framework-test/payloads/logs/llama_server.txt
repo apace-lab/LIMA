@@ -117,7 +117,7 @@ sched_reserve: Flash Attention was auto, set to enabled
 sched_reserve:        CPU compute buffer size =     1.01 MiB
 sched_reserve: graph nodes  = 162
 sched_reserve: graph splits = 1
-sched_reserve: reserve took 1.81 ms, sched copies = 1
+sched_reserve: reserve took 1.15 ms, sched copies = 1
 common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
 srv    load_model: initializing slots, n_slots = 4
 no implementations specified for speculative decoding
@@ -157,11 +157,11 @@ slot update_slots: id  3 | task 0 | new prompt, n_ctx_slot = 256, n_keep = 0, ta
 slot update_slots: id  3 | task 0 | n_tokens = 0, memory_seq_rm [0, end)
 slot update_slots: id  3 | task 0 | prompt processing progress, n_tokens = 3, batch.n_tokens = 3, progress = 1.000000
 slot update_slots: id  3 | task 0 | prompt done, n_tokens = 3, batch.n_tokens = 3
-slot init_sampler: id  3 | task 0 | init sampler, took 0.01 ms, tokens: text = 3, total = 3
+slot init_sampler: id  3 | task 0 | init sampler, took 0.00 ms, tokens: text = 3, total = 3
 slot print_timing: id  3 | task 0 | 
-prompt eval time =      18.38 ms /     3 tokens (    6.13 ms per token,   163.26 tokens per second)
-       eval time =     383.47 ms /   253 tokens (    1.52 ms per token,   659.76 tokens per second)
-      total time =     401.85 ms /   256 tokens
+prompt eval time =      17.18 ms /     3 tokens (    5.73 ms per token,   174.57 tokens per second)
+       eval time =     312.94 ms /   253 tokens (    1.24 ms per token,   808.46 tokens per second)
+      total time =     330.12 ms /   256 tokens
 slot      release: id  3 | task 0 | stop processing: n_tokens = 255, truncated = 1
 srv  update_slots: all slots are idle
 srv  log_server_r: done request: POST /completion 127.0.0.1 200
@@ -170,8 +170,8 @@ srv  get_availabl: updating prompt cache
 srv   prompt_save:  - saving prompt with length 255, total state size = 0.159 MiB
 srv          load:  - looking for better prompt, base f_keep = 0.012, sim = 1.000
 srv        update:  - cache state: 1 prompts, 0.159 MiB (limits: 8192.000 MiB, 256 tokens, 13163978 est)
-srv        update:    - prompt 0xaaab143720e0:     255 tokens, checkpoints:  0,     0.159 MiB
-srv  get_availabl: prompt cache update took 0.06 ms
+srv        update:    - prompt 0xaaaaf7c110e0:     255 tokens, checkpoints:  0,     0.159 MiB
+srv  get_availabl: prompt cache update took 0.12 ms
 slot launch_slot_: id  3 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
 slot launch_slot_: id  3 | task 254 | processing task, is_child = 0
 slot update_slots: id  3 | task 254 | new prompt, n_ctx_slot = 256, n_keep = 0, task.n_tokens = 3
@@ -182,9 +182,9 @@ slot update_slots: id  3 | task 254 | prompt processing progress, n_tokens = 3, 
 slot update_slots: id  3 | task 254 | prompt done, n_tokens = 3, batch.n_tokens = 1
 slot init_sampler: id  3 | task 254 | init sampler, took 0.00 ms, tokens: text = 3, total = 3
 slot print_timing: id  3 | task 254 | 
-prompt eval time =       5.79 ms /     1 tokens (    5.79 ms per token,   172.56 tokens per second)
-       eval time =     171.07 ms /    32 tokens (    5.35 ms per token,   187.05 tokens per second)
-      total time =     176.87 ms /    33 tokens
+prompt eval time =      11.03 ms /     1 tokens (   11.03 ms per token,    90.65 tokens per second)
+       eval time =     123.60 ms /    32 tokens (    3.86 ms per token,   258.91 tokens per second)
+      total time =     134.63 ms /    33 tokens
 slot      release: id  3 | task 254 | stop processing: n_tokens = 34, truncated = 0
 srv  update_slots: all slots are idle
 srv  log_server_r: done request: POST /completion 127.0.0.1 200
@@ -196,8 +196,8 @@ srv  get_availabl: updating prompt cache
 srv   prompt_save:  - saving prompt with length 34, total state size = 0.021 MiB
 srv          load:  - looking for better prompt, base f_keep = 0.088, sim = 1.000
 srv        update:  - cache state: 2 prompts, 0.180 MiB (limits: 8192.000 MiB, 256 tokens, 13155756 est)
-srv        update:    - prompt 0xaaab143720e0:     255 tokens, checkpoints:  0,     0.159 MiB
-srv        update:    - prompt 0xaaab14378510:      34 tokens, checkpoints:  0,     0.021 MiB
+srv        update:    - prompt 0xaaaaf7c110e0:     255 tokens, checkpoints:  0,     0.159 MiB
+srv        update:    - prompt 0xaaaaf7c17510:      34 tokens, checkpoints:  0,     0.021 MiB
 srv  get_availabl: prompt cache update took 0.02 ms
 slot launch_slot_: id  3 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
 slot launch_slot_: id  3 | task 287 | processing task, is_child = 0
@@ -209,9 +209,9 @@ slot update_slots: id  3 | task 287 | prompt processing progress, n_tokens = 3, 
 slot update_slots: id  3 | task 287 | prompt done, n_tokens = 3, batch.n_tokens = 1
 slot init_sampler: id  3 | task 287 | init sampler, took 0.00 ms, tokens: text = 3, total = 3
 slot print_timing: id  3 | task 287 | 
-prompt eval time =      18.29 ms /     1 tokens (   18.29 ms per token,    54.69 tokens per second)
-       eval time =     111.14 ms /    10 tokens (   11.11 ms per token,    89.98 tokens per second)
-      total time =     129.42 ms /    11 tokens
+prompt eval time =       0.39 ms /     1 tokens (    0.39 ms per token,  2538.07 tokens per second)
+       eval time =      36.28 ms /    10 tokens (    3.63 ms per token,   275.63 tokens per second)
+      total time =      36.67 ms /    11 tokens
 slot      release: id  3 | task 287 | stop processing: n_tokens = 12, truncated = 0
 srv  update_slots: all slots are idle
 srv  log_server_r: done request: POST /completion 127.0.0.1 200

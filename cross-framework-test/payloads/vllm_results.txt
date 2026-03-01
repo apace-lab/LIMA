@@ -1,0 +1,10 @@
+Structured Output | vLLM | invalid_schema_type | CRASHED | Server died on invalid schema type
+Structured Output | vLLM | invalid_regex | CRASHED | Server died on invalid regex
+Structured Output | vLLM | invalid_tool_schema | CRASHED | Server died on invalid tool schema
+ReDoS | vLLM | tool_parser_backtrack | VULNERABLE | Request timed out (>15s) — likely ReDoS
+ReDoS | vLLM | json_extraction_backtrack | VULNERABLE | Request timed out (>15s)
+Resource Exhaustion | vLLM | extreme_max_tokens | CRASHED | Server died
+Resource Exhaustion | vLLM | extreme_best_of | CRASHED | Server died on best_of=500
+Resource Exhaustion | vLLM | large_http_header | CRASHED | Server died on 1MB header
+Recursion | vLLM | nested_json_schema | CRASHED | Server died on deeply nested schema
+No Auth | vLLM | no_auth | NOT_VULNERABLE | Auth required

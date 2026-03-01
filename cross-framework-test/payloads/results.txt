@@ -2,8 +2,8 @@ Integer Overflow | LocalAI | p1a_negative_key_length | PANIC_RECOVERED | Go pani
 Integer Overflow | LocalAI | p1b_negative_array_count | NOT_VULNERABLE | Server survived
 Integer Overflow | LocalAI | p1c_negative_value_length | PANIC_RECOVERED | Go panic caught by recover()
 Heap Overflow | LocalAI | p2a_large_n_kv | NOT_VULNERABLE | Server survived
-Heap Overflow | LocalAI | p2b_large_n_tensors | CRASHED | OOMKilled=true exit=137 — GGUF triggered fatal OOM
-Heap Overflow | LocalAI | p2c_small_vocab | PANIC_RECOVERED | Go panic caught by recover()
+Heap Overflow | LocalAI | p2b_large_n_tensors | NOT_VULNERABLE | Server survived
+Heap Overflow | LocalAI | p2c_small_vocab | CRASHED | OOMKilled=true exit=137 — GGUF triggered fatal OOM
 Heap Overflow | LocalAI | p2d_large_key_length | PANIC_RECOVERED | Go panic caught by recover()
 Null Pointer | LocalAI | p10a_truncated_magic | NOT_VULNERABLE | Server survived
 Null Pointer | LocalAI | p10b_null_tensor_name | NOT_VULNERABLE | Server survived
