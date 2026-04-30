@@ -7,7 +7,7 @@ Covers 5 root cause categories:
   Resource Exhaustion / DoS  — ReDoS, Recursion, Resource Exhaustion
   Insufficient Access Control — Path Traversal, SSRF, No Auth (tested separately)
   Information Leakage        — timing/hash (tested separately)
-See CROSS_FRAMEWORK_PATTERNS.md for methodology.
+See patterns.md for methodology.
 """
 
 import struct

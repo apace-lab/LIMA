@@ -7,7 +7,7 @@
 #   Resource Exhaustion / DoS  — 22 CVEs
 #   Insufficient Access Control — 10 CVEs
 #   Information Leakage         —  3 CVEs
-# See CROSS_FRAMEWORK_PATTERNS.md for methodology
+# See patterns.md for methodology
 # ══════════════════════════════════════════════════════════════
 set +e  # Don't abort on errors
 
