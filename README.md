@@ -1,4 +1,4 @@
-# LIMA
+# LIMA: Local Inference framework-Model Attack
 
 Docker-based proof-of-concept (PoC) environments for reproducing CVEs and GHSAs in LLM inference stacks: **LocalAI**, **Ollama**, **vLLM**, and **llama.cpp**.
 
