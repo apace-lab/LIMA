@@ -2,6 +2,8 @@
 
 Driver script for running all 58 LIMABench proof-of-concept scripts across four LLM inference frameworks: **LocalAI**, **Ollama**, **vLLM**, and **llama.cpp**.
 
+The LIMA dataset covers **60 vulnerabilities** across four frameworks (llama.cpp 15, vLLM 25, Ollama 15, LocalAI 5). Two vLLM vulnerabilities could not be containerized and are documented in `vllm/README.md` but have no runnable PoC: **CVE-2025-46570** (requires multi-tenant timing measurements infeasible in isolation) and **CVE-2025-1953** (targets the `aibrix` plugin alongside core vLLM). The remaining **58 vulnerabilities** are fully runnable here.
+
 ## Prerequisites
 
 - Docker ≥ 20.10 with Docker Compose
