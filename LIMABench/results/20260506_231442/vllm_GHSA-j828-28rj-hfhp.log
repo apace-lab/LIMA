@@ -1,0 +1,133 @@
+=== GHSA-j828-28rj-hfhp PoC Environment ===
+    Multiple ReDoS Vulnerabilities in vLLM
+
+[1] Building Docker image (Python + vLLM source for reference)...
+ Image ghsa-j828-28rj-hfhp-vllm-redos Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 646B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 514B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.10-slim
+#3 DONE 0.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 32B done
+#5 DONE 0.0s
+
+#6 [1/5] FROM docker.io/library/python:3.10-slim@sha256:cdbf8193cee2e31639ea8ea85ffdd8fa5cce98ee9abfde96ea5f329490048831
+#6 resolve docker.io/library/python:3.10-slim@sha256:cdbf8193cee2e31639ea8ea85ffdd8fa5cce98ee9abfde96ea5f329490048831 0.0s done
+#6 DONE 0.0s
+
+#7 [3/5] RUN git clone --depth 1 --branch v0.8.0 https://github.com/vllm-project/vllm.git /vllm-src
+#7 CACHED
+
+#8 [4/5] WORKDIR /workspace
+#8 CACHED
+
+#9 [2/5] RUN apt-get update && apt-get install -y --no-install-recommends git &&     rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [5/5] COPY exploit.py /workspace/
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 exporting manifest sha256:a501f118075d745ca4a095801159649f6a2e24c5c38031fb90500a2fb0e19b09 done
+#11 exporting config sha256:3ffee9afaed9c76c5deab4d2bf0e6e28f81a0370cc4ab4ae70bdc670c075cc22 done
+#11 exporting attestation manifest sha256:dd1c6f58c66546536a1c20ab372391cea724f75685d353e60808da2655d1595c done
+#11 exporting manifest list sha256:549c6483b7484d52343a1edcc0e613375b6f352f0014643a86e5869a284ad130 done
+#11 naming to docker.io/library/ghsa-j828-28rj-hfhp-vllm-redos:latest done
+#11 unpacking to docker.io/library/ghsa-j828-28rj-hfhp-vllm-redos:latest done
+#11 DONE 0.1s
+
+#12 resolving provenance for metadata file
+#12 DONE 0.0s
+ Image ghsa-j828-28rj-hfhp-vllm-redos Built 
+
+[2] Running ReDoS tests across multiple vulnerable patterns...
+
+ Network ghsa-j828-28rj-hfhp_default Creating 
+ Network ghsa-j828-28rj-hfhp_default Created 
+ Container vllm-ghsa-j828 Creating 
+ Container vllm-ghsa-j828 Created 
+Attaching to vllm-ghsa-j828
+ Container vllm-ghsa-j828 Starting 
+ Container vllm-ghsa-j828 Started 
+vllm-ghsa-j828  | =================================================================
+vllm-ghsa-j828  |   GHSA-j828-28rj-hfhp: Multiple ReDoS Vulnerabilities in vLLM
+vllm-ghsa-j828  | =================================================================
+vllm-ghsa-j828  | 
+vllm-ghsa-j828  | Testing vulnerable regex patterns across vLLM source files.
+vllm-ghsa-j828  | Timeout per test: 30s
+vllm-ghsa-j828  | 
+vllm-ghsa-j828  | =================================================================
+vllm-ghsa-j828  |   Pattern: LoRA module spec parser
+vllm-ghsa-j828  |   Source: vllm/lora/utils.py
+vllm-ghsa-j828  |   Verified in source: Yes
+vllm-ghsa-j828  | =================================================================
+vllm-ghsa-j828  |   Normal input (    14 chars): 0.000003s
+vllm-ghsa-j828  |   many_parens_1k       (  1002 chars): 0.0000s
+vllm-ghsa-j828  |   many_parens_5k       (  5002 chars): 0.0002s
+vllm-ghsa-j828  |   many_parens_10k      ( 10002 chars): 0.0004s
+vllm-ghsa-j828  |   many_parens_50k      ( 50002 chars): 0.0013s
+vllm-ghsa-j828  |   many_parens_100k     (100002 chars): 0.0027s
+vllm-ghsa-j828  |   Growth analysis: infx slower for 99.8x input
+vllm-ghsa-j828  |   Expected O(n^2): ~9961x
+vllm-ghsa-j828  |   >>> Pattern shows limited backtracking with these inputs
+vllm-ghsa-j828  | 
+vllm-ghsa-j828  | =================================================================
+vllm-ghsa-j828  |   Pattern: Chat serving parameter extraction
+vllm-ghsa-j828  |   Source: vllm/entrypoints/openai/serving_chat.py
+vllm-ghsa-j828  |   Verified in source: No (file may differ)
+vllm-ghsa-j828  | =================================================================
+vllm-ghsa-j828  |   Normal input (    40 chars): 0.000004s
+vllm-ghsa-j828  |   no_match_10k         ( 10000 chars): 0.0473s
+vllm-ghsa-j828  |   no_match_50k         ( 50000 chars): 1.1339s
+vllm-ghsa-j828  |   no_match_100k        (100000 chars): 4.2325s [SLOW - ReDoS demonstrated]
+vllm-ghsa-j828  |   >>> ReDoS CONFIRMED for Chat serving parameter extraction
+vllm-ghsa-j828  | 
+vllm-ghsa-j828  | =================================================================
+vllm-ghsa-j828  |   Pattern: Benchmark JSON extraction
+vllm-ghsa-j828  |   Source: benchmarks/benchmark_serving_structured_output.py
+vllm-ghsa-j828  |   Verified in source: Yes
+vllm-ghsa-j828  | =================================================================
+vllm-ghsa-j828  |   Normal input (    16 chars): 0.000004s
+vllm-ghsa-j828  |   many_open_10k        ( 10000 chars): 0.0435s
+vllm-ghsa-j828  |   many_open_50k        ( 50000 chars): 1.0423s
+vllm-ghsa-j828  |   many_open_100k       (100000 chars): 4.2058s [SLOW - ReDoS demonstrated]
+vllm-ghsa-j828  |   >>> ReDoS CONFIRMED for Benchmark JSON extraction
+vllm-ghsa-j828  | 
+vllm-ghsa-j828  | 
+vllm-ghsa-j828  | =================================================================
+vllm-ghsa-j828  |   SUMMARY: GHSA-j828-28rj-hfhp
+vllm-ghsa-j828  | =================================================================
+vllm-ghsa-j828  |   lora/utils.py: Not triggered
+vllm-ghsa-j828  |   serving_chat.py: CONFIRMED
+vllm-ghsa-j828  |   benchmark_structured_output.py: CONFIRMED
+vllm-ghsa-j828  | 
+vllm-ghsa-j828  |   RESULT: 2/3 ReDoS patterns confirmed
+vllm-ghsa-j828  | 
+vllm-ghsa-j828  |   Impact: Crafted inputs cause O(n^2) or worse backtracking
+vllm-ghsa-j828  |   in regex matching, blocking the async event loop and causing DoS.
+vllm-ghsa-j828  |   With sufficiently large inputs (100K+ chars), processing takes
+vllm-ghsa-j828  |   seconds to minutes, making the server unresponsive.
+vllm-ghsa-j828  | 
+vllm-ghsa-j828  |   Fix: vLLM >= 0.9.0 replaces Python 're' with 'regex' library
+vllm-ghsa-j828  |   (PR #18454), which handles backtracking more efficiently.
+vllm-ghsa-j828  | =================================================================
+[Kvllm-ghsa-j828 exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container vllm-ghsa-j828 Stopping 
+ Container vllm-ghsa-j828 Stopped 
+
+=== Done ===
+To clean up: docker compose down
+

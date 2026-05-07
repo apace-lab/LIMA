@@ -1,0 +1,25 @@
+vllm | CVE-2024-11041 | SETUP_OK | 38s
+vllm | CVE-2024-8768 | FAILED | 10s
+vllm | CVE-2024-8939 | FAILED | 2s
+vllm | CVE-2024-9052 | SETUP_OK | 5s
+vllm | CVE-2024-9053 | SETUP_OK | 12s
+vllm | CVE-2025-24357 | SETUP_OK | 72s
+vllm | CVE-2025-25183 | SETUP_OK | 22s
+vllm | CVE-2025-29770 | FAILED | 2s
+vllm | CVE-2025-29783 | SETUP_OK | 12s
+vllm | CVE-2025-30165 | SETUP_OK | 10s
+vllm | CVE-2025-30202 | FAILED | 8s
+vllm | CVE-2025-32381 | FAILED | 2s
+vllm | CVE-2025-32434 | SETUP_OK | 67s
+vllm | CVE-2025-32444 | SETUP_OK | 10s
+vllm | CVE-2025-46560 | SETUP_OK | 14s
+vllm | CVE-2025-46722 | SETUP_OK | 36s
+vllm | CVE-2025-47277 | SETUP_OK | 8s
+vllm | CVE-2025-48887 | SETUP_OK | 22s
+vllm | CVE-2025-48942 | FAILED | 6s
+vllm | CVE-2025-48943 | FAILED | 2s
+vllm | CVE-2025-48944 | FAILED | 2s
+vllm | CVE-2025-48956 | FAILED | 2s
+vllm | GHSA-j828-28rj-hfhp | SETUP_OK | 12s
+
+Total: 23 | Passed: 14 | Confirmed: 0 | Setup-only: 14 | Failed: 9 | Timed-out: 0
