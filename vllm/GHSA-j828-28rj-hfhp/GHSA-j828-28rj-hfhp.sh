@@ -6,7 +6,7 @@
 # nested quantifiers and overlapping alternatives, causing catastrophic
 # backtracking with crafted inputs. Affected files:
 #   - vllm/lora/utils.py (LoRA module spec parsing)
-#   - vllm/entrypoints/openai/tool_parsers/phi4mini_tool_parser.py
+#   - benchmarks/benchmark_serving_structured_output.py
 #   - vllm/entrypoints/openai/serving_chat.py (parameter extraction)
 #
 # This PoC tests each vulnerable regex with crafted payloads to demonstrate
